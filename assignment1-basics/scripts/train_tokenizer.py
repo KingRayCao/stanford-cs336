@@ -1,40 +1,6 @@
-def export_vocab_and_merges(
-    vocab: dict[int, bytes], merges: list[tuple[bytes, bytes]], vocab_path: str, merges_path: str
-) -> None:
-    import json
-
-    # Export vocab to JSON
-    with open(vocab_path, "w", encoding="utf-8") as vocab_file:
-        json.dump(
-            [{"id": k, "hex": v.hex(), "text": v.decode("utf-8", errors="backslashreplace")} for k, v in vocab.items()],
-            vocab_file,
-            ensure_ascii=False,
-            indent=2,
-        )
-
-    # Export merges to text file
-    with open(merges_path, "w", encoding="utf-8") as merges_file:
-        json.dump(
-            [
-                {
-                    "id": i,
-                    "pair_hex": (merge[0].hex(), merge[1].hex()),
-                    "pair_text": (
-                        merge[0].decode("utf-8", errors="backslashreplace"),
-                        merge[1].decode("utf-8", errors="backslashreplace"),
-                    ),
-                }
-                for i, merge in enumerate(merges)
-            ],
-            merges_file,
-            ensure_ascii=False,
-            indent=2,
-        )
-
-
 if __name__ == "__main__":
     import argparse
-    from cs336_basics.train_bpe import train_bpe
+    from cs336_basics.train_bpe import train_bpe, export_vocab_and_merges
 
     parser = argparse.ArgumentParser(description="Train a BPE tokenizer.")
     parser.add_argument("--input_path", type=str, help="Path to the input text file.")
